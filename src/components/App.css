@@ -1,5 +1,5 @@
 .home-container {
-  height: 100vh;
+  min-height: 100vh;
   background: #F8F7FF;
 }
 
@@ -16,6 +16,10 @@
 
 .moving-container h1 {
   margin-bottom: 15px;
+}
+
+.moving-container p {
+  font-weight: 600;
 }
 
 .genres-main {
@@ -60,6 +64,7 @@
   font-weight: 600;
 }
 
+/* media query for mobile devices */
 @media only screen and (max-width: 768px) {
   .genre-section {
     flex-basis: 100%;
