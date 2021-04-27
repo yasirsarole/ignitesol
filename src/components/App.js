@@ -7,6 +7,7 @@ import './App.css';
 // import components
 import GutenbergHome from './GutenbergHome';
 import GenreDetail from './GenreDetail';
+import Error from './Error';
 
 class Gutenberg extends React.Component {
   render() {
