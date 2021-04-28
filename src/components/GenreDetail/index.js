@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // import components
 import SearchContainer from './children/SearchContainer';
+import BookResults from './children/BookResults';
 import Loader from '../Loader';
 
 class GenreDetail extends React.Component {
@@ -17,34 +18,70 @@ class GenreDetail extends React.Component {
     }
   }
 
-    async componentDidMount() {
-      let booksTotal = {};
+    componentDidMount() {
+      document.addEventListener('scroll', this.trackScrolling);
+
+      this.getBooksFromApi('http://skunkworks.ignitesol.com:8000/books');
+    }
+    
+    componentWillUnmount() {
+      document.removeEventListener('scroll', this.trackScrolling);
+    }
+
+    // get document height
+    getDocHeight = () => {
+      var D = document;
+      return Math.max(
+          D.body.scrollHeight, D.documentElement.scrollHeight,
+          D.body.offsetHeight, D.documentElement.offsetHeight,
+          D.body.clientHeight, D.documentElement.clientHeight
+      )
+    }
+
+    // check the scroll percentage
+    amountscrolled = () => {
+      var winheight= window.innerHeight || (document.documentElement || document.body).clientHeight
+      var docheight = this.getDocHeight()
+      var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop
+      var trackLength = docheight - winheight
+      var pctScrolled = Math.floor(scrollTop/trackLength * 100) 
+
+      return pctScrolled;
+    } 
+
+    trackScrolling = () => {
+      if (this.amountscrolled() === 100) {
+        this.getBooksFromApi(this.state.nextPageUrl);
+      }
+    };
+
+    // function to get books from api
+    getBooksFromApi = async (apiUrl) => {
+      let booksTotal = null;
       let nextPageUrl = null;
       let prevPageUrl = null;
 
-      await axios.get('http://skunkworks.ignitesol.com:8000/books')
-        .then(function (response) {
-          booksTotal =  response.data.results;
-          nextPageUrl =  response.data.next;
-          prevPageUrl =  response.data.previous;
-        })
-        .catch(function (error) {
-          console.log('error==>', error)
-        })
-        
-        let pageTitle = this.props.location.state;
+      await axios.get(apiUrl)
+      .then(function (response) {
+        booksTotal =  response.data.results;
+        nextPageUrl =  response.data.next;
+        prevPageUrl =  response.data.previous;
+      })
+      .catch(function (error) {
+        console.log('error==>', error)
+      });
 
-        // filter books according to the genre
-        let books = this.filterbooks(booksTotal, pageTitle);
+      let pageTitle = this.props.location.state;
 
-        // console.log('books==>', books)
+      // filter books according to the genre
+      let books = this.filterbooks(booksTotal, pageTitle);
 
-        this.setState({
-          books,
-          nextPageUrl,
-          prevPageUrl,
-          pageTitle
-        })
+      this.setState({
+        books: [...this.state.books, ...books],
+        nextPageUrl,
+        prevPageUrl,
+        pageTitle
+      })
     }
 
     // function for filtering books according to the genre
@@ -92,6 +129,15 @@ class GenreDetail extends React.Component {
       return books;
     }
 
+    // logic to check if link is present
+    onBookCoverClick = (viewableLink) => {
+      if (viewableLink) {
+        window.open(viewableLink, "_blank");
+      } else {
+        alert("No viewable version available");
+      }
+    }
+
     render() {
         return (
           <>
@@ -100,6 +146,7 @@ class GenreDetail extends React.Component {
               <div className="wrapper">
                 <SearchContainer pageTitle={this.state.pageTitle} />
               </div>
+              <BookResults books={this.state.books} onBookCoverClick={this.onBookCoverClick} />
             </div>)
           }
           </>
@@ -108,5 +155,3 @@ class GenreDetail extends React.Component {
 }
 
 export default GenreDetail;
-
-// Using placeholder images as image links are not available in response - https://via.placeholder.com/145x205
