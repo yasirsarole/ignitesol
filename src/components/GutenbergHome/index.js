@@ -61,7 +61,16 @@ class GutenbergHome extends React.Component {
               <div className="genres-container">
                 {this.state.genres.map(({title, logo}) => {
                   return (
-                    <Link to="/genre-detail" className="genre-section" key={title}>
+                    < Link to = {
+                      {
+                        pathname: "/genre-detail",
+                        state: title
+                      }
+                    }
+                    className = "genre-section"
+                    key = {
+                      title
+                    } >
                       <div className="genre-right">
                         <figure className="genre-logo">
                           <img src={logo} alt={title} />

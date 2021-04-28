@@ -80,6 +80,7 @@ h1 {
 }
 
 h2 {
+  font-family: 'montserratsemibold';
   font-size: 30px;
   color: #5E56E7;
 }
@@ -107,4 +108,13 @@ img {
   width: 80%;
   max-width: 1280px;
   margin: 0 auto;
+}
+
+figure.loader {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
