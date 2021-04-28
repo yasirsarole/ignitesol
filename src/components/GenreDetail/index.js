@@ -1,11 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-// import assets
-import Spinner from '../../assets/Spinner.gif';
-
 // import components
-import SearchContainer from './children/SearchContainer'
+import SearchContainer from './children/SearchContainer';
+import Loader from '../Loader';
 
 class GenreDetail extends React.Component {
   constructor() {
@@ -98,9 +96,7 @@ class GenreDetail extends React.Component {
         return (
           <>
           {
-            (!this.state.pageTitle && <figure className="loader"> 
-              <img src={Spinner} alt="Loader" />
-            </figure>) || (<div className="main-container">
+            (!this.state.pageTitle && <Loader />) || (<div className="main-container">
               <div className="wrapper">
                 <SearchContainer pageTitle={this.state.pageTitle} />
               </div>
