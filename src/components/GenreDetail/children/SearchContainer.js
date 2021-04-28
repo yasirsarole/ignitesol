@@ -6,7 +6,7 @@ import Back from '../../../assets/Back.svg';
 import Search from '../../../assets/Search.svg';
 import Cancel from '../../../assets/Cancel.svg';
 
-const SearchContainer = ({pageTitle}) => {
+const SearchContainer = ({pageTitle, onSearchResults}) => {
     return (
         <>
             <Link to="/" className="title">
@@ -17,11 +17,11 @@ const SearchContainer = ({pageTitle}) => {
             </Link>
             <div className="search-input-container">
                 <figure className="search-icon">
-                <img src={Search} alt="Search Icon" />
+                    <img src={Search} alt="Search Icon" />
                 </figure>
-                <input type="text" placeholder="Search"></input>
+                <input type="text" placeholder="Search" title="Click ourside for search" onBlur={(e) => onSearchResults(e.target.value)}></input>
                 <figure className="cancel-icon">
-                <img src={Cancel} alt="Cancel Icon" />
+                    <img src={Cancel} alt="Cancel Icon" />
                 </figure>
             </div>
       </>

@@ -14,7 +14,7 @@ class GenreDetail extends React.Component {
       books: [],
       nextPageUrl: null,
       prevPageUrl: null,
-      pageTitle: null
+      pageTitle: null,
     }
   }
 
@@ -138,13 +138,18 @@ class GenreDetail extends React.Component {
       }
     }
 
+    // logic to get search results
+    onSearchResults = searchString => {
+      alert(`Search with value ${searchString} not found.`);
+    }
+
     render() {
         return (
           <>
           {
             (!this.state.pageTitle && <Loader />) || (<div className="main-container">
               <div className="wrapper">
-                <SearchContainer pageTitle={this.state.pageTitle} />
+                <SearchContainer pageTitle={this.state.pageTitle} onSearchResults={this.onSearchResults} />
               </div>
               <BookResults books={this.state.books} onBookCoverClick={this.onBookCoverClick} />
             </div>)
